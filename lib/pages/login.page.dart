@@ -67,14 +67,14 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     print("CLICADO EM 'ENTRAR'");
                   },
-                  child: const Text('ENTRAR'),
                   style: ElevatedButton.styleFrom(primary: Colors.blue),
+                  child: const Text('ENTRAR'),
                 ),
               ),
 
               // DIVISIOR
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 15),
                 child: Divider(
                   color: Colors.black,
                   thickness: 2,
@@ -87,8 +87,6 @@ class _LoginPageState extends State<LoginPage> {
                 height: 38,
                 child: ElevatedButton(
                   onPressed: () {
-                    print("CLICADO EM 'CADASTRAR'");
-
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -96,8 +94,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     );
                   },
-                  child: const Text('CADASTRAR'),
                   style: ElevatedButton.styleFrom(primary: Colors.green),
+                  child: const Text('CADASTRAR'),
                 ),
               ),
             ],
