@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdv_flutter/pages/cadastro.page.dart';
+import 'package:pdv_flutter/pages/home.page.dart';
+import 'package:pdv_flutter/repository/usuario.repository.dart';
 import 'package:pdv_flutter/utils/constantes.dart';
 
 class LoginPage extends StatefulWidget {
@@ -11,6 +13,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController _emailController = TextEditingController();
+
+  TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,24 +44,20 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: TextFormField(
+                  controller: _emailController,
                   decoration: const InputDecoration(
                     labelText: 'Email',
                   ),
-                  onChanged: (String textoDigitado) {
-                    print(textoDigitado);
-                  },
                 ),
               ),
               // senha
               TextFormField(
+                controller: _passwordController,
                 obscureText: true,
                 obscuringCharacter: '*',
                 decoration: const InputDecoration(
                   labelText: 'Senha',
                 ),
-                onChanged: (String textoDigitado) {
-                  print(textoDigitado);
-                },
               ),
               // BOTÕES DE ENTRAR E CADASTRAR
               // BOTAO ENTRAR
@@ -64,8 +66,21 @@ class _LoginPageState extends State<LoginPage> {
                 width: 300,
                 height: 68,
                 child: ElevatedButton(
-                  onPressed: () {
-                    print("CLICADO EM 'ENTRAR'");
+                  onPressed: () async {
+                    UsuarioRepository uR = UsuarioRepository();
+
+                    bool senhasIguais = await uR.verificarSenha(_passwordController.text);
+                    bool emailsIguais = await uR.verificarEmail(_emailController.text);
+
+                    if (senhasIguais && emailsIguais) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => const HomePage()),
+                        ModalRoute.withName('/home'),
+                      );
+                    } else {
+                      print("FALHA NA AUTENTICACAO");
+                    }
                   },
                   style: ElevatedButton.styleFrom(primary: Colors.blue),
                   child: const Text('ENTRAR'),
@@ -90,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: ((context) => CadastroPage()),
+                        builder: ((context) => const CadastroPage()),
                       ),
                     );
                   },
