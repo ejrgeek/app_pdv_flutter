@@ -70,9 +70,10 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () async {
                     AutenticacaoController autenticadorController = AutenticacaoController();
 
-
-                    bool dadosValidos =
-                        await autenticadorController.validarLogin(_emailController.text, _passwordController.text);
+                    bool dadosValidos = await autenticadorController.validarLogin(
+                      _emailController.text,
+                      _passwordController.text,
+                    );
 
                     if (dadosValidos) {
                       Navigator.pushAndRemoveUntil(

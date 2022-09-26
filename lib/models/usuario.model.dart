@@ -13,6 +13,13 @@ class UsuarioModel {
     required this.senha,
   });
 
+  UsuarioModel.usuarioVazio();
+
+  UsuarioModel.fromMap(Map<String, dynamic> dados) {
+    email = dados['email'];
+    nomeDeUsuario = dados['nome'];
+  }
+
   Map<String, dynamic> toJson() {
     return {
       "nomeDoUsuario": nomeDeUsuario,
