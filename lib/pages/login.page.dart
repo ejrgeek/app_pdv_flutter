@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pdv_flutter/controllers/autenticacao.controller.dart';
 import 'package:pdv_flutter/pages/cadastro.page.dart';
 import 'package:pdv_flutter/pages/home.page.dart';
 import 'package:pdv_flutter/repository/usuario.repository.dart';
@@ -67,12 +68,13 @@ class _LoginPageState extends State<LoginPage> {
                 height: 68,
                 child: ElevatedButton(
                   onPressed: () async {
-                    UsuarioRepository uR = UsuarioRepository();
+                    AutenticacaoController autenticadorController = AutenticacaoController();
 
-                    bool senhasIguais = await uR.verificarSenha(_passwordController.text);
-                    bool emailsIguais = await uR.verificarEmail(_emailController.text);
 
-                    if (senhasIguais && emailsIguais) {
+                    bool dadosValidos =
+                        await autenticadorController.validarLogin(_emailController.text, _passwordController.text);
+
+                    if (dadosValidos) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => const HomePage()),
@@ -113,6 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Text('CADASTRAR'),
                 ),
               ),
+              //
             ],
           ),
         ),

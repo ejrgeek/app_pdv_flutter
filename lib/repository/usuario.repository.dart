@@ -52,6 +52,21 @@ class UsuarioRepository {
 
     Map<String, dynamic> dadosDoUsuario = jsonDecode(dados!);
 
-    return dadosDoUsuario["nomeDeUsuario"];
+    return dadosDoUsuario["nomeDoUsuario"];
+  }
+
+  Future<Map<String, dynamic>> retornarNomeEEmail() async {
+    SharedPreferences localRepo = await repo;
+
+    String? dados = localRepo.getString("usuario");
+
+    Map<String, dynamic> dadosDecodificados = jsonDecode(dados!);
+
+    Map<String, dynamic> nomeEmail = {
+      "nome": dadosDecodificados["nomeDoUsuario"],
+      "email": dadosDecodificados["email"],
+    };
+
+    return nomeEmail;
   }
 }

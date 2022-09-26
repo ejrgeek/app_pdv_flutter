@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:pdv_flutter/controllers/autenticacao.controller.dart';
 import 'package:pdv_flutter/models/usuario.model.dart';
 import 'package:pdv_flutter/repository/usuario.repository.dart';
 
@@ -79,7 +80,17 @@ class _CadastroPageState extends State<CadastroPage> {
                 padding: const EdgeInsets.only(top: 24),
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (_password1Controller.text == _password2Controller.text) {
+                    AutenticacaoController autenticadorController = AutenticacaoController();
+
+                    bool senhasIguais = autenticadorController.verificarSeAsSenhasSaoIguais(
+                      _password1Controller.text,
+                      _password2Controller.text,
+                    );
+
+                    bool emailValido = autenticadorController.validarEmail(_emailController.text);
+                    bool senhaValida = autenticadorController.validarSenha(_password1Controller.text);
+
+                    if (senhasIguais && emailValido && senhaValida) {
                       UsuarioModel usuario = UsuarioModel(
                         nomeDeUsuario: _nomeController.text,
                         idade: int.parse(_idadeController.text),
@@ -87,11 +98,13 @@ class _CadastroPageState extends State<CadastroPage> {
                         senha: _password1Controller.text,
                       );
 
-                      UsuarioRepository uR = UsuarioRepository();
-
-                      await uR.salvarUsuario(usuario);
+                      await autenticadorController.cadastrarUsuario(usuario);
 
                       Navigator.pop(context);
+                    } else {
+                      print("Senhas iguais $senhasIguais");
+                      print("Email valido $emailValido");
+                      print("Senha valida $senhaValida");
                     }
                   },
                   child: Text("Cadastrar Dados"),

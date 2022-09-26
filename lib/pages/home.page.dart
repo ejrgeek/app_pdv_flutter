@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pdv_flutter/pages/login.page.dart';
 import 'package:pdv_flutter/repository/usuario.repository.dart';
@@ -10,27 +12,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String _nomeDoUsuario = "";
+  Map<String, dynamic> dadosDoUsuario = {};
+
   UsuarioRepository userR = UsuarioRepository();
 
   carregarDadosDoUsuario() async {
-    String? nome = await userR.retornarNomeUsuario();
+    Map<String, dynamic> dadosLocais = await userR.retornarNomeEEmail();
 
     setState(() {
-      _nomeDoUsuario = nome!;
+      dadosDoUsuario = dadosLocais;
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    
+  void initState() {
     carregarDadosDoUsuario();
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       //
       appBar: AppBar(
         title: Text(
-          "Bem-vinda (o) $_nomeDoUsuario",
+          "Bem-vinda(o), ${dadosDoUsuario['nome']}",
           style: TextStyle(fontSize: 12),
         ),
         actions: [
@@ -56,6 +62,8 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: <Widget>[
             //
+            Text("Nome do usuário: ${dadosDoUsuario['nome']}"),
+            Text("Email do usuário: ${dadosDoUsuario['email']}"),
             //
             //
           ],
